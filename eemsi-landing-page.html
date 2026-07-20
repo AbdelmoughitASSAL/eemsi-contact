@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>EEMSI — École Européenne Marocaine de Santé et d'Infirmerie</title>
+<meta name="description" content="EEMSI — École Européenne Marocaine de Santé et d'Infirmerie. Votre avenir dans la santé commence ici. Contactez-nous, localisez notre campus et rejoignez notre communauté.">
+<meta name="theme-color" content="#0457AE">
+
+<!-- Open Graph -->
+<meta property="og:title" content="EEMSI — École Européenne Marocaine de Santé et d'Infirmerie">
+<meta property="og:description" content="Votre avenir dans la santé commence ici.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --primary:#0457AE;
+    --secondary:#0D6DC3;
+    --ink:#0A1B2E;
+    --muted:#5C7690;
+    --muted-soft:#8CA0B5;
+    --mist:#EAF3FC;
+    --mist-2:#F5FAFF;
+    --line:rgba(4,87,174,0.10);
+    --glass:rgba(255,255,255,0.62);
+    --glass-border:rgba(255,255,255,0.55);
+    --shadow-soft: 0 20px 40px -18px rgba(4,87,174,0.18);
+    --shadow-card: 0 1px 2px rgba(10,27,46,0.04), 0 12px 28px -14px rgba(4,87,174,0.16);
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;
+    background:#FFFFFF;
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    min-height:100svh;
+  }
+  h1,h2,.font-display{font-family:'Manrope',system-ui,sans-serif;}
+
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+
+  ::selection{background:var(--mist); color:var(--primary);}
+
+  /* ---------- Background scene ---------- */
+  .scene{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    overflow:hidden;
+    background:#FFFFFF;
+  }
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(60px);
+    opacity:.55;
+    will-change:transform;
+  }
+  .blob-1{
+    width:340px;height:340px;
+    top:-120px; left:-100px;
+    background:radial-gradient(circle at 30% 30%, #CFE6FB, #EAF3FC 70%);
+    animation:float1 16s ease-in-out infinite;
+  }
+  .blob-2{
+    width:300px;height:300px;
+    top:280px; right:-140px;
+    background:radial-gradient(circle at 60% 40%, #DCEEFC, #F5FAFF 70%);
+    animation:float2 20s ease-in-out infinite;
+  }
+  .blob-3{
+    width:260px;height:260px;
+    bottom:-100px; left:-80px;
+    background:radial-gradient(circle at 40% 60%, #E4F1FC, #FFFFFF 70%);
+    animation:float1 18s ease-in-out infinite reverse;
+  }
+  @keyframes float1{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(18px,-24px) scale(1.06);}
+  }
+  @keyframes float2{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-20px,20px) scale(1.05);}
+  }
+
+  /* faint medical cross grid */
+  .cross-field{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 60% 45% at 50% 8%, #000 0%, transparent 70%);
+    mask-image:radial-gradient(ellipse 60% 45% at 50% 8%, #000 0%, transparent 70%);
+    opacity:.5;
+  }
+
+  /* ---------- Shell ---------- */
+  .shell{
+    max-width:480px;
+    margin:0 auto;
+    padding:38px 22px 140px;
+    position:relative;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{ text-align:center; }
+
+  .eyebrow-top{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--secondary);
+    font-weight:600;
+    opacity:0;
+    animation:fadeUp .7s var(--ease) forwards;
+    animation-delay:.05s;
+  }
+  .eyebrow-top::before, .eyebrow-top::after{
+    content:"";
+    width:14px; height:1px;
+    background:linear-gradient(90deg, transparent, var(--secondary));
+  }
+  .eyebrow-top::after{ transform:scaleX(-1); }
+
+  .logo-wrap{
+    position:relative;
+    width:112px; height:112px;
+    margin:26px auto 22px;
+    opacity:0;
+    animation:fadeUp .8s var(--ease) forwards;
+    animation-delay:.15s;
+  }
+  .logo-ring{
+    position:absolute; inset:-9px;
+    border-radius:50%;
+    border:1px solid var(--line);
+  }
+  .logo-ring::before{
+    content:"";
+    position:absolute; inset:-1px;
+    border-radius:50%;
+    padding:1px;
+    background:conic-gradient(from 0deg, var(--primary), var(--secondary), transparent 55%, var(--primary));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    animation:spin 7s linear infinite;
+    opacity:.55;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .logo-badge{
+    position:relative;
+    width:100%; height:100%;
+    border-radius:50%;
+    background:linear-gradient(155deg, var(--primary), var(--secondary));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:var(--shadow-soft), inset 0 1px 1px rgba(255,255,255,.35);
+  }
+  .logo-badge span{
+    font-family:'Manrope',sans-serif;
+    font-weight:800;
+    font-size:15px;
+    letter-spacing:.03em;
+    color:#fff;
+  }
+  .verified{
+    position:absolute;
+    bottom:0px; right:0px;
+    width:30px; height:30px;
+    border-radius:50%;
+    background:#fff;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 12px rgba(4,87,174,0.25);
+    border:2px solid #fff;
+  }
+  .verified svg{ width:16px; height:16px; }
+
+  .school-name{
+    font-size:29px;
+    font-weight:800;
+    letter-spacing:-0.01em;
+    margin:0 0 4px;
+    opacity:0;
+    animation:fadeUp .8s var(--ease) forwards;
+    animation-delay:.25s;
+  }
+  .school-full{
+    font-size:12.5px;
+    color:var(--muted-soft);
+    font-weight:500;
+    margin:0 0 16px;
+    line-height:1.5;
+    opacity:0;
+    animation:fadeUp .8s var(--ease) forwards;
+    animation-delay:.32s;
+  }
+  .tagline{
+    font-size:16.5px;
+    color:var(--muted);
+    font-weight:500;
+    line-height:1.55;
+    margin:0 auto 22px;
+    max-width:300px;
+    opacity:0;
+    animation:fadeUp .8s var(--ease) forwards;
+    animation-delay:.4s;
+  }
+  .tagline b{ color:var(--ink); font-weight:600; }
+
+  /* pulse / heartbeat signature */
+  .pulse-wrap{
+    position:relative;
+    width:100%;
+    max-width:280px;
+    height:34px;
+    margin:0 auto 22px;
+    opacity:0;
+    animation:fadeUp .8s var(--ease) forwards;
+    animation-delay:.5s;
+  }
+  .pulse-wrap svg{ width:100%; height:100%; overflow:visible; }
+  .pulse-path{
+    fill:none;
+    stroke:url(#pulseGrad);
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:340;
+    stroke-dashoffset:340;
+    animation:draw 1.6s var(--ease) forwards .7s, glow 2.4s ease-in-out infinite 2.3s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes glow{
+    0%,100%{ opacity:1; }
+    50%{ opacity:.55; }
+  }
+  .pulse-dot{
+    fill:var(--primary);
+    opacity:0;
+    animation:dotIn .3s ease forwards 2.2s;
+  }
+  @keyframes dotIn{ to{ opacity:1; } }
+
+  .scan-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 18px;
+    border-radius:100px;
+    background:var(--glass);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--glass-border);
+    box-shadow:var(--shadow-card);
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--primary);
+    letter-spacing:.01em;
+    opacity:0;
+    animation:fadeUp .8s var(--ease) forwards;
+    animation-delay:.58s;
+  }
+  .scan-pill .dot{
+    width:5px; height:5px; border-radius:50%;
+    background:var(--secondary);
+    display:inline-block;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ---------- Section label ---------- */
+  .section-label{
+    display:flex; align-items:center; gap:10px;
+    margin:40px 2px 14px;
+    opacity:0;
+    animation:fadeUp .7s var(--ease) forwards;
+    animation-delay:.62s;
+  }
+  .section-label span{
+    font-size:11px;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    font-weight:700;
+    color:var(--muted-soft);
+  }
+  .section-label::after{
+    content:""; flex:1; height:1px;
+    background:linear-gradient(90deg, var(--line), transparent);
+  }
+
+  /* ---------- Contact cards ---------- */
+  .cards{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .card{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px 16px;
+    border-radius:20px;
+    background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.6));
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(4,87,174,0.08);
+    box-shadow:var(--shadow-card);
+    overflow:hidden;
+    isolation:isolate;
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+    opacity:0;
+    transform:translateY(16px);
+  }
+  .card.in{ animation:fadeUp .6s var(--ease) forwards; }
+
+  [data-reveal]{ opacity:0; transform:translateY(16px); }
+  [data-reveal].in{ animation:fadeUp .6s var(--ease) forwards; }
+  .footer[data-reveal]{ transform:none; }
+
+  .card::before{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(120deg, transparent 30%, rgba(4,87,174,0.06), transparent 70%);
+    opacity:0;
+    transition:opacity .35s var(--ease);
+    z-index:-1;
+  }
+  .card:active{ transform:scale(0.975); }
+  @media (hover:hover){
+    .card:hover{
+      transform:translateY(-3px);
+      border-color:rgba(4,87,174,0.18);
+      box-shadow:0 1px 2px rgba(10,27,46,0.05), 0 22px 36px -16px rgba(4,87,174,0.28);
+    }
+    .card:hover::before{ opacity:1; }
+    .card:hover .card-icon{ transform:scale(1.06) rotate(-2deg); }
+    .card:hover .card-arrow{ transform:translateX(3px); }
+  }
+
+  .card-icon{
+    flex-shrink:0;
+    width:50px; height:50px;
+    border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg, var(--mist), var(--mist-2));
+    border:1px solid rgba(4,87,174,0.10);
+    transition:transform .35s var(--ease);
+  }
+  .card-icon svg{ width:23px; height:23px; }
+
+  .card-body{ flex:1; min-width:0; }
+  .card-title{
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    color:var(--ink);
+    margin:0 0 2px;
+  }
+  .card-desc{
+    font-size:12.5px;
+    color:var(--muted);
+    margin:0;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .card-arrow{
+    flex-shrink:0;
+    width:30px; height:30px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--secondary);
+    transition:transform .3s var(--ease);
+  }
+  .card-arrow svg{ width:15px; height:15px; }
+
+  .ripple{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(4,87,174,0.18);
+    transform:scale(0);
+    animation:rippleAnim .6s var(--ease);
+    pointer-events:none;
+  }
+  @keyframes rippleAnim{
+    to{ transform:scale(2.6); opacity:0; }
+  }
+
+  /* ---------- Footer ---------- */
+  .footer{
+    text-align:center;
+    margin-top:44px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    opacity:0;
+  }
+  .footer p{
+    font-size:11.5px;
+    color:var(--muted-soft);
+    margin:0 0 3px;
+    font-weight:500;
+  }
+  .footer .brand-mini{
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    color:var(--muted);
+    font-size:12.5px;
+  }
+
+  /* ---------- Sticky bottom bar ---------- */
+  .bottombar{
+    position:fixed;
+    left:50%;
+    bottom:18px;
+    transform:translate(-50%, 24px);
+    width:calc(100% - 44px);
+    max-width:400px;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    padding:10px 8px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.72);
+    backdrop-filter:blur(20px) saturate(160%);
+    -webkit-backdrop-filter:blur(20px) saturate(160%);
+    border:1px solid rgba(255,255,255,0.6);
+    box-shadow:0 18px 40px -14px rgba(4,87,174,0.30), 0 2px 8px rgba(10,27,46,0.06);
+    z-index:40;
+    opacity:0;
+    transition:opacity .5s var(--ease), transform .5s var(--ease);
+  }
+  .bottombar.show{ opacity:1; transform:translate(-50%, 0); }
+
+  .bar-item{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    padding:7px 16px;
+    border-radius:14px;
+    color:var(--muted);
+    transition:background .25s var(--ease), color .25s var(--ease), transform .2s var(--ease);
+    flex:1;
+  }
+  .bar-item svg{ width:20px; height:20px; }
+  .bar-item span{ font-size:10px; font-weight:600; letter-spacing:.01em; }
+  .bar-item:active{ transform:scale(.92); }
+  .bar-item.primary{ color:var(--primary); }
+  @media (hover:hover){
+    .bar-item:hover{ background:var(--mist); color:var(--primary); }
+  }
+
+  /* ---------- Floating contact bubble ---------- */
+  .fab{
+    position:fixed;
+    right:18px;
+    bottom:96px;
+    width:54px; height:54px;
+    border-radius:50%;
+    background:linear-gradient(155deg, var(--primary), var(--secondary));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 14px 28px -8px rgba(4,87,174,0.45);
+    z-index:41;
+    opacity:0;
+    transform:scale(.6);
+    transition:transform .35s var(--ease), box-shadow .3s var(--ease);
+  }
+  .fab.show{ opacity:1; transform:scale(1); }
+  .fab:active{ transform:scale(.9); }
+  .fab svg{ width:23px; height:23px; color:#fff; }
+  .fab-ring{
+    position:absolute; inset:0; border-radius:50%;
+    border:1.5px solid var(--secondary);
+    animation:ringPulse 2.6s ease-out infinite;
+  }
+  @keyframes ringPulse{
+    0%{ transform:scale(1); opacity:.6; }
+    100%{ transform:scale(1.7); opacity:0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+  }
+
+  :focus-visible{
+    outline:2px solid var(--primary);
+    outline-offset:3px;
+    border-radius:8px;
+  }
+
+  @media (max-height: 600px){
+    .bottombar{ bottom:12px; }
+    .fab{ bottom:76px; }
+  }
+
+  @media (max-width: 360px){
+    .shell{ padding:32px 16px 120px; }
+    .card-desc{ font-size:11.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scene" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="cross-field"></div>
+</div>
+
+<main class="shell">
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="eyebrow-top">Meknès · Maroc</p>
+
+    <div class="logo-wrap">
+      <div class="logo-ring" aria-hidden="true"></div>
+      <div class="logo-badge">
+        <span>EEMSI</span>
+      </div>
+      <div class="verified" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.4 2.8-.3 1.1 2.6 2.6 1.1-.3 2.8L22 12l-1.4 2.4.3 2.8-2.6 1.1-1.1 2.6-2.8-.3L12 22l-2.4-1.4-2.8.3-1.1-2.6-2.6-1.1.3-2.8L2 12l1.4-2.4-.3-2.8 2.6-1.1 1.1-2.6 2.8.3L12 2z" fill="#0457AE"/><path d="M8.5 12.3l2.3 2.3 4.7-4.9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+
+    <h1 class="school-name">EEMSI</h1>
+    <p class="school-full">École Européenne Marocaine<br>de Santé et d'Infirmerie</p>
+    <p class="tagline"><b>Votre avenir dans la santé</b><br>commence ici.</p>
+
+    <div class="pulse-wrap" aria-hidden="true">
+      <svg viewBox="0 0 280 34" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="pulseGrad" x1="0" y1="0" x2="280" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#0457AE" stop-opacity="0.15"/>
+            <stop offset="0.45" stop-color="#0457AE"/>
+            <stop offset="0.55" stop-color="#0D6DC3"/>
+            <stop offset="1" stop-color="#0D6DC3" stop-opacity="0.15"/>
+          </linearGradient>
+        </defs>
+        <path class="pulse-path" d="M0,17 L70,17 L86,17 L96,4 L108,30 L118,17 L134,17 L146,17 L156,8 L166,17 L182,17 L280,17"/>
+        <circle class="pulse-dot" cx="118" cy="17" r="3.5"/>
+      </svg>
+    </div>
+
+    <div class="scan-pill">
+      <span>Scannez</span><span class="dot"></span><span>Contactez</span><span class="dot"></span><span>Rejoignez EEMSI</span>
+    </div>
+  </section>
+
+  <!-- CONTACT CARDS -->
+  <div class="section-label"><span>Nous retrouver</span></div>
+
+  <nav class="cards" aria-label="Liens de contact EEMSI">
+
+    <a class="card" data-reveal href="https://maps.app.goo.gl/XdNBBA4x5C6j1PCx8" target="_blank" rel="noopener" aria-label="Ouvrir la localisation du campus sur Google Maps">
+      <span class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0457AE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.6"/></svg>
+      </span>
+      <span class="card-body">
+        <p class="card-title">Localisation</p>
+        <p class="card-desc">Voir le campus sur la carte</p>
+      </span>
+      <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></span>
+    </a>
+
+    <a class="card" data-reveal href="https://wa.me/212661299072" target="_blank" rel="noopener" aria-label="Nous contacter sur WhatsApp">
+      <span class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0457AE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M9 10.5c0 3 2.5 5.5 5.5 5.5" stroke-width="1.6"/></svg>
+      </span>
+      <span class="card-body">
+        <p class="card-title">WhatsApp</p>
+        <p class="card-desc">Discuter directement avec nous</p>
+      </span>
+      <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></span>
+    </a>
+
+    <a class="card" data-reveal href="https://eemsi.ma/" target="_blank" rel="noopener" aria-label="Visiter le site web d'EEMSI">
+      <span class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0457AE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg>
+      </span>
+      <span class="card-body">
+        <p class="card-title">Site Web</p>
+        <p class="card-desc">eemsi.ma</p>
+      </span>
+      <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></span>
+    </a>
+
+    <a class="card" data-reveal href="https://www.facebook.com/eemsisante/?locale=fr_FR" target="_blank" rel="noopener" aria-label="Suivre EEMSI sur Facebook">
+      <span class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0457AE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v7h3v-7h2.2l.8-3H14v-1.5c0-.5.3-1 1-1h1.5V8z"/><rect x="3" y="3" width="18" height="18" rx="5"/></svg>
+      </span>
+      <span class="card-body">
+        <p class="card-title">Facebook</p>
+        <p class="card-desc">Actualités &amp; vie de l'école</p>
+      </span>
+      <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></span>
+    </a>
+
+    <a class="card" data-reveal href="https://www.instagram.com/eemsisante" target="_blank" rel="noopener" aria-label="Suivre EEMSI sur Instagram">
+      <span class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0457AE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="#0457AE" stroke="none"/></svg>
+      </span>
+      <span class="card-body">
+        <p class="card-title">Instagram</p>
+        <p class="card-desc">Coulisses &amp; moments campus</p>
+      </span>
+      <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></span>
+    </a>
+
+    <a class="card" data-reveal href="https://www.tiktok.com/@eemsi1" target="_blank" rel="noopener" aria-label="Suivre EEMSI sur TikTok">
+      <span class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0457AE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4v10.2a3.3 3.3 0 1 1-2.4-3.18"/><path d="M14 4c.4 2.2 2.1 3.8 4.3 4.1"/></svg>
+      </span>
+      <span class="card-body">
+        <p class="card-title">TikTok</p>
+        <p class="card-desc">Contenus étudiants &amp; formations</p>
+      </span>
+      <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></span>
+    </a>
+
+  </nav>
+
+  <footer class="footer" data-reveal>
+    <p class="brand-mini">EEMSI</p>
+    <p>École Européenne Marocaine de Santé et d'Infirmerie</p>
+    <p>EEMSI © 2026</p>
+  </footer>
+
+</main>
+
+<!-- Floating contact bubble -->
+<a href="https://wa.me/212661299072" target="_blank" rel="noopener" class="fab" id="fab" aria-label="Contactez-nous sur WhatsApp">
+  <span class="fab-ring" aria-hidden="true"></span>
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.36 2 11.75c0 2.06.66 3.97 1.78 5.55L2.5 21.5l4.4-1.15A10.1 10.1 0 0 0 12 21.5c5.52 0 10-4.36 10-9.75S17.52 2 12 2z" opacity=".001"/><path d="M17.4 14.4c-.28-.14-1.66-.82-1.92-.91-.26-.1-.44-.14-.63.14-.19.28-.72.9-.88 1.09-.16.19-.32.21-.6.07-.28-.14-1.18-.44-2.24-1.4-.83-.75-1.39-1.68-1.55-1.96-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.16.19-.28.28-.47.09-.19.05-.35-.02-.5-.07-.14-.63-1.53-.87-2.1-.23-.55-.46-.48-.63-.49h-.54c-.19 0-.5.07-.76.35-.26.28-1 1-1 2.42s1.02 2.8 1.16 3c.14.19 2.01 3.1 4.86 4.35.68.3 1.21.47 1.63.6.68.22 1.3.19 1.79.11.55-.08 1.66-.68 1.89-1.34.24-.65.24-1.21.17-1.33-.07-.12-.26-.19-.54-.33z"/><path d="M12 2C6.48 2 2 6.36 2 11.75c0 2.06.66 3.97 1.78 5.55L2.5 21.5l4.4-1.15A10.1 10.1 0 0 0 12 21.5c5.52 0 10-4.36 10-9.75S17.52 2 12 2zm0 17.75c-1.6 0-3.11-.44-4.4-1.2l-.31-.18-2.61.68.7-2.53-.2-.32a8.06 8.06 0 0 1-1.28-4.45c0-4.44 3.68-8.05 8.1-8.05s8.1 3.61 8.1 8.05-3.68 8-8.1 8z" fill="none"/></svg>
+</a>
+
+<!-- Sticky bottom bar -->
+<nav class="bottombar" id="bottombar" aria-label="Actions rapides">
+  <a class="bar-item primary" href="https://wa.me/212661299072" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <span>WhatsApp</span>
+  </a>
+  <a class="bar-item" href="https://eemsi.ma/" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg>
+    <span>Site</span>
+  </a>
+  <a class="bar-item" href="https://maps.app.goo.gl/XdNBBA4x5C6j1PCx8" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.6"/></svg>
+    <span>Maps</span>
+  </a>
+</nav>
+
+<script>
+  if ('IntersectionObserver' in window) {
+    const items = document.querySelectorAll('[data-reveal]');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach((e,i)=>{
+        if(e.isIntersecting){
+          e.target.style.animationDelay = (i*0.05)+'s';
+          e.target.classList.add('in');
+          e.target.style.opacity = '';
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.15});
+    items.forEach(el=>io.observe(el));
+  } else {
+    document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('in'));
+  }
+
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card=>{
+    card.addEventListener('click', function(e){
+      try {
+        const rect = card.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        const size = Math.max(rect.width, rect.height) * 1.2;
+        ripple.className = 'ripple';
+        ripple.style.width = ripple.style.height = size+'px';
+        ripple.style.left = (e.clientX - rect.left - size/2)+'px';
+        ripple.style.top = (e.clientY - rect.top - size/2)+'px';
+        card.appendChild(ripple);
+        setTimeout(()=>ripple.remove(), 650);
+      } catch(err) {
+        console.error('Ripple animation error:', err);
+      }
+    });
+  });
+
+  window.addEventListener('load', ()=>{
+    try {
+      const bottombar = document.getElementById('bottombar');
+      const fab = document.getElementById('fab');
+      if(bottombar && fab) {
+        setTimeout(()=>{
+          bottombar.classList.add('show');
+          fab.classList.add('show');
+        }, 600);
+      }
+    } catch(err) {
+      console.error('Navigation UI error:', err);
+    }
+  });
+</script>
+
+<noscript>
+  <style>
+    [data-reveal] { opacity: 1 !important; transform: none !important; animation: none !important; }
+    .bottombar, .fab { opacity: 1; transform: none; }
+  </style>
+</noscript>
+
+</body>
+</html>
