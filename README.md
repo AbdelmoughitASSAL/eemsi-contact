@@ -31,21 +31,21 @@ A modern, responsive contact landing page for **École Européenne Marocaine de 
 
 ## Quick Start
 
-Simply open `eemsi-landing-page.html` in any modern browser. No build tools or installation needed.
+Simply open `index.html` in any modern browser. No build tools or installation needed.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/eemsi-contact.git
+git clone https://github.com/abdelmoughitassal/eemsi-contact.git
 
 # Open in browser
-open eemsi-landing-page.html
+open index.html
 ```
 
 ## File Structure
 
 ```
 eemsi-contact/
-├── eemsi-landing-page.html    # Main landing page
+├── index.html                 # Main landing page
 ├── README.md                  # This file
 ├── LICENSE                    # MIT License
 └── .gitignore                # Git ignore rules
